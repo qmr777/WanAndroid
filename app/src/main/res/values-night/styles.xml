@@ -1,0 +1,60 @@
+<resources>
+    <!-- Base application theme. -->
+    <!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/toolbar_bg_dark</item>
+        <item name="colorPrimaryDark">@color/toolbar_bg_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/toolbar_bg_dark</item>-->
+        <item name="android:windowLightStatusBar">false</item>
+
+    </style>
+
+    <!--app:theme toolbar的theme-->
+    <style name="ToolBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--toolbar背景色-->
+        <item name="colorPrimary">@color/toolbar_bg_light</item>
+        <!--状态栏背景色 设置在activity里-->
+        <item name="colorPrimaryDark">@color/toolbar_bg_dark</item>
+        <!--edit CheckBox等颜色 设置在activity里-->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--字体颜色-->
+        <item name="android:textColorPrimary">@color/toolbar_text_dark</item>
+        <item name="android:background">@color/toolbar_bg_dark</item>
+        <!--定义ToolBar上Menu的字体样式-->
+        <item name="actionMenuTextAppearance">@android:style/TextAppearance.DeviceDefault.Small
+        </item>
+        <!--定义ToolBar上Menu的字体颜色-->
+        <item name="actionMenuTextColor">@color/toolbar_text_dark</item>
+        <!--定义ToolBar上回退按钮的图片-->
+        <!--        <item name="homeAsUpIndicator">@drawable/icon_back_black</item>-->
+    </style>
+
+    <!--定义ToolBar上Title的文字样式  app:titleTextAppearance-->
+    <!--    <style name="AppTheme.ToolbarTitleTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">-->
+    <!--        <item name="android:textSize">16sp</item>-->
+    <!--        <item name="android:textColor">@color/facebook_color</item>-->
+    <!--    </style>-->
+
+    <!--    app:popupTheme toolbar弹出菜单-->
+    <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">#212121</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="actionMenuTextAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
+
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+</resources>

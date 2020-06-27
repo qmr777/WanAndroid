@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/id_navi_main"
+        android:icon="@drawable/ic_mainpage"
+        android:title="@string/mainpage" />
+
+    <item
+        android:id="@+id/id_tixi"
+        android:icon="@drawable/ic_tixi"
+        android:title="体系" />
+
+    <item
+        android:id="@+id/id_navigation"
+        android:icon="@drawable/ic_navigation"
+        android:title="导航" />
+
+    <item
+        android:id="@+id/id_wenda"
+        android:icon="@drawable/ic_wenda"
+        android:title="问答" />
+
+    <item
+        android:id="@+id/id_mine"
+        android:icon="@drawable/ic_mine"
+        android:title="我的" />
+
+</menu>
