@@ -1,5 +1,8 @@
 package com.qmr.wanandroid.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -9,7 +12,7 @@ import com.qmr.base.model.BaseBean;
 import java.util.List;
 
 @Entity
-public class ArticleBean extends BaseBean {
+public class ArticleBean extends BaseBean implements Parcelable {
 
     /**
      * apkLink :
@@ -369,4 +372,100 @@ public class ArticleBean extends BaseBean {
         this.tags = tags;
     }
 
+    public static final Parcelable.Creator<ArticleBean> CREATOR = new Parcelable.Creator<ArticleBean>() {
+        @Override
+        public ArticleBean createFromParcel(Parcel source) {
+            return new ArticleBean(source);
+        }
+
+        @Override
+        public ArticleBean[] newArray(int size) {
+            return new ArticleBean[size];
+        }
+    };
+
+    public ArticleBean() {
+    }
+
+    protected ArticleBean(Parcel in) {
+        this.s_id = in.readLong();
+        this.user_id = in.readInt();
+        this.time = in.readInt();
+        this.apkLink = in.readString();
+        this.audit = in.readInt();
+        this.author = in.readString();
+        this.canEdit = in.readByte() != 0;
+        this.chapterId = in.readInt();
+        this.chapterName = in.readString();
+        this.collect = in.readByte() != 0;
+        this.courseId = in.readInt();
+        this.desc = in.readString();
+        this.descMd = in.readString();
+        this.envelopePic = in.readString();
+        this.fresh = in.readByte() != 0;
+        this.id = in.readInt();
+        this.link = in.readString();
+        this.niceDate = in.readString();
+        this.niceShareDate = in.readString();
+        this.origin = in.readString();
+        this.prefix = in.readString();
+        this.projectLink = in.readString();
+        this.publishTime = in.readLong();
+        this.realSuperChapterId = in.readInt();
+        this.selfVisible = in.readInt();
+        this.shareDate = in.readLong();
+        this.shareUser = in.readString();
+        this.superChapterId = in.readInt();
+        this.superChapterName = in.readString();
+        this.title = in.readString();
+        this.type = in.readInt();
+        this.userId = in.readInt();
+        this.visible = in.readInt();
+        this.zan = in.readInt();
+        this.tags = in.createTypedArrayList(TagsBean.CREATOR);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.s_id);
+        dest.writeInt(this.user_id);
+        dest.writeInt(this.time);
+        dest.writeString(this.apkLink);
+        dest.writeInt(this.audit);
+        dest.writeString(this.author);
+        dest.writeByte(this.canEdit ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.chapterId);
+        dest.writeString(this.chapterName);
+        dest.writeByte(this.collect ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.courseId);
+        dest.writeString(this.desc);
+        dest.writeString(this.descMd);
+        dest.writeString(this.envelopePic);
+        dest.writeByte(this.fresh ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.id);
+        dest.writeString(this.link);
+        dest.writeString(this.niceDate);
+        dest.writeString(this.niceShareDate);
+        dest.writeString(this.origin);
+        dest.writeString(this.prefix);
+        dest.writeString(this.projectLink);
+        dest.writeLong(this.publishTime);
+        dest.writeInt(this.realSuperChapterId);
+        dest.writeInt(this.selfVisible);
+        dest.writeLong(this.shareDate);
+        dest.writeString(this.shareUser);
+        dest.writeInt(this.superChapterId);
+        dest.writeString(this.superChapterName);
+        dest.writeString(this.title);
+        dest.writeInt(this.type);
+        dest.writeInt(this.userId);
+        dest.writeInt(this.visible);
+        dest.writeInt(this.zan);
+        dest.writeTypedList(this.tags);
+    }
 }

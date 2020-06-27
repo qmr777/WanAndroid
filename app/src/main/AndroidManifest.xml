@@ -15,11 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".ui.mine.history.ReadLaterActivity"></activity>
-        <activity
-            android:name=".ui.mine.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+        <activity android:name=".ui.mine.history.ReadLaterActivity" />
         <activity android:name=".ui.common.SearchActivity" />
         <activity
             android:name=".ui.mine.history.HistoryActivity"

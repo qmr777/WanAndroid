@@ -34,8 +34,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     LinearLayout llCollect;
     @BindView(R.id.ll_read_later)
     LinearLayout llReadLater;
-    @BindView(R.id.ll_open)
-    LinearLayout llOpen;
     @BindView(R.id.ll_about_me)
     LinearLayout llAboutMe;
     @BindView(R.id.pre_layout)

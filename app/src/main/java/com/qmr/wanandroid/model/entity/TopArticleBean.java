@@ -1,10 +1,15 @@
 package com.qmr.wanandroid.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.qmr.base.model.BaseBean;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class TopArticleBean extends BaseBean {
+public class TopArticleBean extends BaseBean implements Parcelable, Serializable {
 
     /**
      * apkLink :
@@ -329,11 +334,76 @@ public class TopArticleBean extends BaseBean {
         this.tags = tags;
     }
 
+    public static final Parcelable.Creator<TopArticleBean> CREATOR = new Parcelable.Creator<TopArticleBean>() {
+        @Override
+        public TopArticleBean createFromParcel(Parcel source) {
+            return new TopArticleBean(source);
+        }
+
+        @Override
+        public TopArticleBean[] newArray(int size) {
+            return new TopArticleBean[size];
+        }
+    };
+
+    /*
+
     public static class TagsBean {
-        /**
-         * name : 本站发布
-         * url : /article/list/0?cid=440
-         */
+        */
+    public TopArticleBean() {
+    }
+
+    protected TopArticleBean(Parcel in) {
+        this.apkLink = in.readString();
+        this.audit = in.readInt();
+        this.author = in.readString();
+        this.canEdit = in.readByte() != 0;
+        this.chapterId = in.readInt();
+        this.chapterName = in.readString();
+        this.collect = in.readByte() != 0;
+        this.courseId = in.readInt();
+        this.desc = in.readString();
+        this.descMd = in.readString();
+        this.envelopePic = in.readString();
+        this.fresh = in.readByte() != 0;
+        this.id = in.readInt();
+        this.link = in.readString();
+        this.niceDate = in.readString();
+        this.niceShareDate = in.readString();
+        this.origin = in.readString();
+        this.prefix = in.readString();
+        this.projectLink = in.readString();
+        this.publishTime = in.readLong();
+        this.selfVisible = in.readInt();
+        this.shareDate = in.readLong();
+        this.shareUser = in.readString();
+        this.superChapterId = in.readInt();
+        this.superChapterName = in.readString();
+        this.title = in.readString();
+        this.type = in.readInt();
+        this.userId = in.readInt();
+        this.visible = in.readInt();
+        this.zan = in.readInt();
+        this.tags = new ArrayList<TagsBean>();
+        in.readList(this.tags, TagsBean.class.getClassLoader());
+    }
+
+    @Override
+    public String toString() {
+        return "TopArticleBean{" +
+                "author='" + author + '\'' +
+                ", collect=" + collect +
+                ", desc='" + desc + '\'' +
+                ", fresh=" + fresh +
+                ", title='" + title + '\'' +
+                '}';
+    }
+
+    /**
+     * name : 本站发布
+     * url : /article/list/0?cid=440
+     *//*
+
 
         private String name;
         private String url;
@@ -353,5 +423,45 @@ public class TopArticleBean extends BaseBean {
         public void setUrl(String url) {
             this.url = url;
         }
+    }
+*/
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.apkLink);
+        dest.writeInt(this.audit);
+        dest.writeString(this.author);
+        dest.writeByte(this.canEdit ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.chapterId);
+        dest.writeString(this.chapterName);
+        dest.writeByte(this.collect ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.courseId);
+        dest.writeString(this.desc);
+        dest.writeString(this.descMd);
+        dest.writeString(this.envelopePic);
+        dest.writeByte(this.fresh ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.id);
+        dest.writeString(this.link);
+        dest.writeString(this.niceDate);
+        dest.writeString(this.niceShareDate);
+        dest.writeString(this.origin);
+        dest.writeString(this.prefix);
+        dest.writeString(this.projectLink);
+        dest.writeLong(this.publishTime);
+        dest.writeInt(this.selfVisible);
+        dest.writeLong(this.shareDate);
+        dest.writeString(this.shareUser);
+        dest.writeInt(this.superChapterId);
+        dest.writeString(this.superChapterName);
+        dest.writeString(this.title);
+        dest.writeInt(this.type);
+        dest.writeInt(this.userId);
+        dest.writeInt(this.visible);
+        dest.writeInt(this.zan);
+        dest.writeList(this.tags);
     }
 }

@@ -50,6 +50,7 @@ public interface MainApi {
         Observable<WanAndroidResponse<WendaBean>> wenda(@Path("page") int page);
 
         @GET("http://bing.getlove.cn/latelyBingImageStory")
+//开屏图片
         Observable<List<BingImageEntity>> splashImage();
 
 

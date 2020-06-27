@@ -63,7 +63,7 @@ public class MainArticleAdapter extends BaseRecyclerViewAdapter<MainArticleAdapt
                 ArticleListActivity.linkStart(v.getContext(), TextUtils.isEmpty(data.getAuthor()) ? data.getShareUser() : data.getAuthor());
             }
         });
-
+        holder.iv_coll.setVisibility(data.isCollect() ? View.VISIBLE : View.GONE);
         holder.tvChapterName.setText(data.getChapterName());
         holder.tvTitle.setText(Html.fromHtml(data.getTitle()));
         holder.tvTime.setText(data.getNiceShareDate());
@@ -104,6 +104,8 @@ public class MainArticleAdapter extends BaseRecyclerViewAdapter<MainArticleAdapt
         TextView tvTop;
         @BindView(R.id.tv_chapter_name)
         TextView tvChapterName;
+        @BindView(R.id.iv_coll)
+        ImageView iv_coll;
 
         public Holder(@NonNull View itemView) {
             super(itemView);

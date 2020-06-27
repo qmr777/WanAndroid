@@ -13,7 +13,7 @@ public abstract class BaseRecyclerViewAdapter<VH extends RecyclerView.ViewHolder
 
     protected OnItemClickListener<Data> listener;
     protected OnItemLongClickListener<Data> longClickListener;
-    protected List<Data> datalist = new ArrayList<>();
+    protected ArrayList<Data> datalist = new ArrayList<>();
 
     public void setOnItemClickListener(OnItemClickListener<Data> l) {
         listener = l;
@@ -32,6 +32,10 @@ public abstract class BaseRecyclerViewAdapter<VH extends RecyclerView.ViewHolder
     public void clearData() {
         datalist.clear();
         notifyDataSetChanged();
+    }
+
+    public ArrayList<Data> getData() {
+        return datalist;
     }
 
     public void addData(List<Data> data) {

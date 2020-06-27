@@ -50,6 +50,10 @@ public class HomeFragment extends BaseFragment implements IHomeView {
 
     private LinearLayoutManager llm;
 
+    public static final String BANNER = "b";
+    public static final String TOP = "t";
+    public static final String CONTENT = "c";
+
     public HomeFragment() {
     }
 
@@ -74,7 +78,14 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initData();
+        if (savedInstanceState != null) {
+            headerAdapter.resetData(savedInstanceState.getParcelableArrayList(BANNER));
+            topArticleAdapter.resetData(savedInstanceState.getParcelableArrayList(TOP));
+            articleListAdapter.resetData(savedInstanceState.getParcelableArrayList(CONTENT));
+            llm.scrollToPosition(savedInstanceState.getInt("position", 0));
+        } else {
+            initData();
+        }
     }
 
     @Override
@@ -119,7 +130,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         articleListAdapter.setOnItemLongClickListener(new OnItemLongClickListener<ArticleBean>() {
             @Override
             public boolean OnItemLongClick(int position, ArticleBean data) {
-                showArticleDialog(data);
+                showArticleDialog(data, position);
                 return true;
             }
         });
@@ -133,7 +144,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         topArticleAdapter.setOnItemLongClickListener(new OnItemLongClickListener<TopArticleBean>() {
             @Override
             public boolean OnItemLongClick(int position, TopArticleBean data) {
-                showTopDialog(data);
+                showTopDialog(data, position);
                 return true;
             }
         });
@@ -204,11 +215,11 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     }
 
 
-    void showTopDialog(TopArticleBean bean) {
+    void showTopDialog(TopArticleBean bean, int position) {
         new ArticleDialog(bean).show(getChildFragmentManager(), null);
     }
 
-    void showArticleDialog(ArticleBean bean) {
+    void showArticleDialog(ArticleBean bean, int position) {
         new ArticleDialog(bean).show(getChildFragmentManager(), null);
     }
 
@@ -237,5 +248,14 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     public void refresh() {
         topArticleAdapter.clearData();
         articleListAdapter.clearData();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("position", llm.findFirstCompletelyVisibleItemPosition());
+        outState.putParcelableArrayList(TOP, topArticleAdapter.getData());
+        outState.putParcelableArrayList(CONTENT, articleListAdapter.getData());
+        outState.putParcelableArrayList(BANNER, headerAdapter.getData());
     }
 }

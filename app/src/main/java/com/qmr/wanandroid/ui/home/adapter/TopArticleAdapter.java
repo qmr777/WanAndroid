@@ -16,6 +16,7 @@ import com.qmr.base.adapter.BaseRecyclerViewAdapter;
 import com.qmr.base.adapter.OnItemClickListener;
 import com.qmr.base.image.ImageLoader;
 import com.qmr.wanandroid.R;
+import com.qmr.wanandroid.model.entity.TagsBean;
 import com.qmr.wanandroid.model.entity.TopArticleBean;
 import com.qmr.wanandroid.ui.common.ArticleListActivity;
 import com.qmr.wanandroid.ui.common.WebViewActivity;
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
 
 public class TopArticleAdapter extends BaseRecyclerViewAdapter<TopArticleAdapter.Holder, TopArticleBean> {
 
+    public static final String TAG = "TopArticleAdapter";
 
     //private OnItemClickListener<TopArticleBean> listener;
 
@@ -69,6 +71,8 @@ public class TopArticleAdapter extends BaseRecyclerViewAdapter<TopArticleAdapter
         holder.tvChapterName.setText(data.getChapterName());
         holder.tvTitle.setText(Html.fromHtml(data.getTitle()));
         holder.tvTime.setText(data.getNiceShareDate());
+        holder.iv_coll.setVisibility(data.isCollect() ? View.VISIBLE : View.GONE);
+
         if (!TextUtils.isEmpty(data.getDesc())) {
             holder.tvDesc.setVisibility(View.VISIBLE);
             holder.tvDesc.setText(Html.fromHtml(data.getDesc()));
@@ -77,7 +81,7 @@ public class TopArticleAdapter extends BaseRecyclerViewAdapter<TopArticleAdapter
         if (data.getTags() != null && data.getTags().size() != 0) {
             //holder.tvTag.setText(data.getTags().get(0).getName());
             StringBuilder sb = new StringBuilder();
-            for (TopArticleBean.TagsBean tagsBean : data.getTags())
+            for (TagsBean tagsBean : data.getTags())
                 sb.append(tagsBean.getName()).append("|");
             sb.deleteCharAt(sb.length() - 1);
             holder.tvTag.setText(sb);
@@ -106,6 +110,8 @@ public class TopArticleAdapter extends BaseRecyclerViewAdapter<TopArticleAdapter
         TextView tvTop;
         @BindView(R.id.tv_chapter_name)
         TextView tvChapterName;
+        @BindView(R.id.iv_coll)
+        ImageView iv_coll;
 
         public Holder(@NonNull View itemView) {
             super(itemView);

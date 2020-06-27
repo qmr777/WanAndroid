@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.qmr.wanandroid.BuildConfig;
 import com.qmr.wanandroid.R;
 import com.qmr.wanandroid.model.entity.BingImageEntity;
 import com.qmr.wanandroid.network.base.RequestManager;
@@ -22,6 +23,7 @@ import com.qmr.wanandroid.network.main.MainApi;
 import com.qmr.wanandroid.ui.MainActivity;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -89,10 +91,14 @@ public class SplashActivity extends AppCompatActivity {
         });
 
         double rand = Math.random();
-        if (rand < 0.8) {
+        if (rand < BuildConfig.van_probility) {
             tvWan.setText("Van♂Android");
             tvDesc.setText("Deep♂Dark♂Fantasy");
-            Glide.with(this).load(R.drawable.ddf).into(iv);
+            int[] ids = {R.drawable.ddf1, R.drawable.ddf2, R.drawable.ddf3, R.drawable.ddf4};
+            Random r = new Random();
+
+            tvDesc.setVisibility(View.VISIBLE);
+            Glide.with(this).load(ids[r.nextInt(4)]).into(iv);
             Disposable d = Observable.timer(5, TimeUnit.SECONDS)
                     .subscribe(new Consumer<Long>() {
                         @Override
@@ -112,7 +118,7 @@ public class SplashActivity extends AppCompatActivity {
                         @Override
                         public BingImageEntity apply(List<BingImageEntity> bingImageEntities) throws Throwable {
                             int rand = (int) (Math.random() * 100 % bingImageEntities.size());
-                            if (rand >= bingImageEntities.size())
+                            while (rand >= bingImageEntities.size())
                                 rand--;
                             return bingImageEntities.get(rand);
                         }

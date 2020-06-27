@@ -30,6 +30,8 @@ public class HeaderAdapter extends BaseRecyclerViewAdapter<HeaderAdapter.Holder,
     public void resetData(List<BannerBean> bannerBeans) {
         bannerAdapter.setDatas(bannerBeans);
         bannerAdapter.notifyDataSetChanged();
+        datalist.clear();
+        datalist.addAll(bannerBeans);
     }
 
     @NonNull

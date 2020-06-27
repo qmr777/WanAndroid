@@ -1,8 +1,11 @@
 package com.qmr.wanandroid.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.qmr.base.model.BaseBean;
 
-public class BannerBean extends BaseBean {
+public class BannerBean extends BaseBean implements Parcelable {
 
     /**
      * desc : 一起来做个App吧
@@ -100,5 +103,49 @@ public class BannerBean extends BaseBean {
                 ", type=" + type +
                 ", url='" + url + '\'' +
                 '}';
+    }
+
+
+    public static final Creator<BannerBean> CREATOR = new Creator<BannerBean>() {
+        @Override
+        public BannerBean createFromParcel(Parcel source) {
+            return new BannerBean(source);
+        }
+
+        @Override
+        public BannerBean[] newArray(int size) {
+            return new BannerBean[size];
+        }
+    };
+
+    public BannerBean() {
+    }
+
+    protected BannerBean(Parcel in) {
+        this.desc = in.readString();
+        this.id = in.readInt();
+        this.imagePath = in.readString();
+        this.isVisible = in.readInt();
+        this.order = in.readInt();
+        this.title = in.readString();
+        this.type = in.readInt();
+        this.url = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.desc);
+        dest.writeInt(this.id);
+        dest.writeString(this.imagePath);
+        dest.writeInt(this.isVisible);
+        dest.writeInt(this.order);
+        dest.writeString(this.title);
+        dest.writeInt(this.type);
+        dest.writeString(this.url);
     }
 }
