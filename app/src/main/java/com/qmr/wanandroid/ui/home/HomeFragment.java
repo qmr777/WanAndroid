@@ -214,7 +214,6 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         unbindPresenter();
     }
 
-
     void showTopDialog(TopArticleBean bean, int position) {
         new ArticleDialog(bean).show(getChildFragmentManager(), null);
     }

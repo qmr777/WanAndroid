@@ -22,6 +22,23 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
 /**
  * 不含erreocode的缓存类，应该用在checkObservable之后
+ * <p>
+ * //关键代码示例
+ * Observable.concat(firstObservable, secondObservable)
+ * .observeOn(AndroidSchedulers.mainThread())
+ * .subscribeOn(Schedulers.io())
+ * .subscribe(concatObserver);
+ * 以上面的代码为例，总结一下onNext、onComplete的执行顺序。
+ * 1、concatObserver按顺序接收到firstObservable的onNext传递的数据，secondObservable的onNext传递的数据，最后再触发onComplete。
+ * 2、firstObservable必须要执行emitter.onComplete后，secondObservable的emitter.onNext才能传递到concatObserver的onNext方法。
+ * 3、firstObservable和secondObservable必须都要调用emitter.onComplete才能执行concatObserver的onComplete方法。
+ * 4、firstObservable、secondObservable在emitter.onComplete方法后调用的emitter.onNext并不会抵达concatObserver的onNext方法。
+ * emitter.onError方法后的emitter.onNext方法同上。但不要再emitter.onComplete后调用emitter.onError，否则出现io.reactivex.exceptions.UndeliverableException
+ * <p>
+ * 作者：zizi192
+ * 链接：https://www.jianshu.com/p/e80bb5a5f09e
+ * 来源：简书
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  */
 public class CacheObserver {
 
@@ -55,6 +72,7 @@ public class CacheObserver {
                 String c = CacheManager.getInstance().get(Const.KEY_WENDA);
                 WendaBean bean = new Gson().fromJson(c, WendaBean.class);
                 emitter.onNext(bean);
+                emitter.onComplete();
             }
         });
 
@@ -71,6 +89,7 @@ public class CacheObserver {
                 }.getType();
                 List<BannerBean> bean = new Gson().fromJson(c, type);
                 emitter.onNext(bean);
+                emitter.onComplete();//加上
             }
         });
         return ob;
@@ -85,6 +104,7 @@ public class CacheObserver {
                 }.getType();
                 List<TopArticleBean> bean = new Gson().fromJson(c, type);
                 emitter.onNext(bean);
+                emitter.onComplete();
             }
         });
 
@@ -102,6 +122,7 @@ public class CacheObserver {
                 }.getType();
                 ArticleListBean bean = new Gson().fromJson(c, type);
                 emitter.onNext(bean);
+                emitter.onComplete();
             }
         });
         return ob;
@@ -118,6 +139,7 @@ public class CacheObserver {
                 }.getType();
                 List<NaviBean> bean = new Gson().fromJson(c, type);
                 emitter.onNext(bean);
+                emitter.onComplete();
             }
         });
         return ob;
@@ -134,6 +156,7 @@ public class CacheObserver {
                 }.getType();
                 List<TixiBean> bean = new Gson().fromJson(c, type);
                 emitter.onNext(bean);
+                emitter.onComplete();
             }
         });
         return ob;
@@ -148,6 +171,7 @@ public class CacheObserver {
                 }.getType();
                 List<TixiBean> bean = new Gson().fromJson(c, type);
                 emitter.onNext(bean);
+                emitter.onComplete();
             }
         });
         return ob;

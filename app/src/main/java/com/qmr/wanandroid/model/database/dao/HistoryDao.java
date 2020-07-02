@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface HistoryDao {
 
-    @Query("SELECT * FROM historybean ORDER BY time")
+    @Query("SELECT * FROM historybean ORDER BY time DESC")
     List<HistoryBean> getHistory();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

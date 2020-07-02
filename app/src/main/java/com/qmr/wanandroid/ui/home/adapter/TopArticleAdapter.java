@@ -70,7 +70,7 @@ public class TopArticleAdapter extends BaseRecyclerViewAdapter<TopArticleAdapter
 
         holder.tvChapterName.setText(data.getChapterName());
         holder.tvTitle.setText(Html.fromHtml(data.getTitle()));
-        holder.tvTime.setText(data.getNiceShareDate());
+        holder.tvTime.setText(data.getNiceDate());
         holder.iv_coll.setVisibility(data.isCollect() ? View.VISIBLE : View.GONE);
 
         if (!TextUtils.isEmpty(data.getDesc())) {

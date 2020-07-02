@@ -30,13 +30,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);//夜间模式——跟随系统
-
-        debugToast(AppCompatDelegate.getDefaultNightMode() + "夜间模式");
-        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         TAG = this.getClass().getSimpleName();
         disposable = new CompositeDisposable();
+        super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);//夜间模式——跟随系统
+        //debugToast(AppCompatDelegate.getDefaultNightMode() + "夜间模式");
+        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
     protected void addDisposable(Disposable disposable) {

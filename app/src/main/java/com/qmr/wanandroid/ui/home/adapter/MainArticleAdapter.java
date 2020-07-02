@@ -66,7 +66,7 @@ public class MainArticleAdapter extends BaseRecyclerViewAdapter<MainArticleAdapt
         holder.iv_coll.setVisibility(data.isCollect() ? View.VISIBLE : View.GONE);
         holder.tvChapterName.setText(data.getChapterName());
         holder.tvTitle.setText(Html.fromHtml(data.getTitle()));
-        holder.tvTime.setText(data.getNiceShareDate());
+        holder.tvTime.setText(data.getNiceDate());
         if (!TextUtils.isEmpty(data.getDesc())) {
             holder.tvDesc.setVisibility(View.VISIBLE);
             holder.tvDesc.setText(Html.fromHtml(data.getDesc()));

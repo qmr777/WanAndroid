@@ -24,6 +24,7 @@ public class CheckAndSaveFlatMapFunc<T> implements Function<WanAndroidResponse<T
 
     @Override
     public Observable<T> apply(WanAndroidResponse<T> tWanAndroidResponse) throws Throwable {
+
         if (tWanAndroidResponse.getCode() != 0) {
             throw new WanNetworkException(tWanAndroidResponse.getMsg());
         }
