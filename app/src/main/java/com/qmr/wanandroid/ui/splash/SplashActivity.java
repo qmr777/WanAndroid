@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -93,7 +94,7 @@ public class SplashActivity extends AppCompatActivity {
         double rand = Math.random();
         if (rand < BuildConfig.van_probility) {
             tvWan.setText("Van♂Android");
-            tvDesc.setText("Deep♂Dark♂Fantasy");
+            tvDesc.setText("Do you like ♂ VanAndroid?");
             int[] ids = {R.drawable.ddf1, R.drawable.ddf2, R.drawable.ddf3, R.drawable.ddf4};
             Random r = new Random();
 
@@ -132,6 +133,7 @@ public class SplashActivity extends AppCompatActivity {
 
                         @Override
                         public void onNext(@NonNull BingImageEntity bingImageEntity) {
+                            //Toast.makeText(SplashActivity.this,bingImageEntity.getCDNUrl(),Toast.LENGTH_SHORT).show();
                             Glide.with(SplashActivity.this)
                                     .load("https:" + bingImageEntity.getCDNUrl())
                                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -142,6 +144,7 @@ public class SplashActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
+                            Toast.makeText(SplashActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                             Log.e(TAG, e.getMessage(), e);
                             cd.dispose();
                             SplashActivity.this.startActivity(new Intent(SplashActivity.this, MainActivity.class));

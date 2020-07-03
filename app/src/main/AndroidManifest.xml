@@ -22,17 +22,19 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.mine.collection.CollectionActivity" />
         <activity
+            android:configChanges="keyboard|keyboardHidden|orientation"
             android:name=".ui.mine.login.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".ui.common.ArticleListActivity" />
         <activity android:name=".ui.common.WebViewActivity" />
-        <activity android:name=".ui.MainActivity" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard" />
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

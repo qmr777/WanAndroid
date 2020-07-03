@@ -11,9 +11,12 @@ import java.util.List;
 public abstract class BaseRecyclerViewAdapter<VH extends RecyclerView.ViewHolder, Data>
         extends RecyclerView.Adapter<VH> {
 
+    public static final int ITEM_TYPE_EMPTY = 4396;
+
     protected OnItemClickListener<Data> listener;
     protected OnItemLongClickListener<Data> longClickListener;
     protected ArrayList<Data> datalist = new ArrayList<>();
+
 
     public void setOnItemClickListener(OnItemClickListener<Data> l) {
         listener = l;
