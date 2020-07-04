@@ -2,11 +2,11 @@ package com.qmr.wanandroid.ui.mine.login;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.qmr.base.activity.BaseActivity;
 import com.qmr.wanandroid.R;
@@ -35,8 +35,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     Button login;
     @BindView(R.id.register)
     Button register;
-    @BindView(R.id.loading)
-    ProgressBar loading;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +79,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onError(@NonNull Throwable e) {
                         Log.i(TAG, "onError: " + e.getMessage());
                         shortToast(e.getMessage());
+                        tvPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     }
 
                     @Override
