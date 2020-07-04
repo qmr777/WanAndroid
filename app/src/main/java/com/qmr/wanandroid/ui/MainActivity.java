@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity {
     List<BaseFragment> fragmentList = new ArrayList<>();
     String[] titles = {"WanAndroid", "体系", "导航", "问答", "我的"};
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
