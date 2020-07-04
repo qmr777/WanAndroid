@@ -1,9 +1,13 @@
 package com.qmr.wanandroid.ui.common;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -12,6 +16,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +36,7 @@ import com.qmr.wanandroid.ui.home.adapter.MainArticleAdapter;
 import com.qmr.wanandroid.ui.tixi.FlexboxAdapter;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +53,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchActivity extends BaseActivity implements View.OnClickListener {
 
+    public static final String KEY_QUERY = "query";
+
     @BindView(R.id.textView)
     EditText textView;
     @BindView(R.id.button)
@@ -56,22 +65,39 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     FlexboxLayout flHotkey;
     @BindView(R.id.rv_result)
     RecyclerView rvResult;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    SearchView mSearchView;
 
     FlexboxAdapter<HotKeyBean> hotKeyBeanFlexboxAdapter;
     MainArticleAdapter articleAdapter = new MainArticleAdapter();
-
     private String prevKey = "";
     private int mPage = 0;
     private boolean flag_search = false;//是否在搜索页
     private boolean flag_can_load_more = false;//是否在搜索页
+
+    public static void linkStart(Activity activity, String msg) {
+        Intent i = new Intent(activity, SearchActivity.class);
+        i.putExtra(KEY_QUERY, msg);
+        activity.startActivity(i);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+        initToolbar(toolbar, null);
         initView();
         initHotkey();
+        //needSearch();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus)
+            needSearch();
     }
 
     @Override
@@ -162,6 +188,25 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 });
     }
 
+    private void initSearch(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) searchItem.getActionView();
+        mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                search(mPage, s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return true;
+            }
+        });
+    }
+
     protected void loadMore() {
         if (TextUtils.isEmpty(prevKey) && flag_can_load_more) {
             search(mPage, prevKey);
@@ -169,10 +214,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    private void needSearch() {//一次
+        String k = getIntent().getStringExtra(KEY_QUERY);
+        if (TextUtils.isEmpty(k)) return;
+        search(mPage, k);
+        //toolbar.setTitle(k);
+    }
+
     protected void search(int page, String key) {
         if (TextUtils.isEmpty(key))
             return;
-
+        Objects.requireNonNull(getSupportActionBar()).setTitle("搜索：" + key);
+        //mSearchView.clearFocus();
+        mSearchView.onActionViewCollapsed();
         flag_search = true;
         flag_can_load_more = true;
         flHotkey.setVisibility(View.GONE);
@@ -196,7 +250,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         disposable.add(d);
-
                     }
 
                     @Override
@@ -221,6 +274,24 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        initSearch(menu);
+        return true;
+    }
+
+/*
+    @Override
+    public void finish() {
+        if (flag_search) {
+            flag_search = false;
+            rvResult.setVisibility(View.GONE);
+            flHotkey.setVisibility(View.VISIBLE);
+        } else {
+            super.finish();
+        }
+    }
+*/
 
     @Override
     public void onClick(View v) {
@@ -233,13 +304,16 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    public void finish() {
-        if (flag_search) {
-            flag_search = false;
-            rvResult.setVisibility(View.GONE);
-            flHotkey.setVisibility(View.VISIBLE);
-        } else {
-            super.finish();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (flag_search) {
+                flag_search = false;
+                rvResult.setVisibility(View.GONE);
+                flHotkey.setVisibility(View.VISIBLE);
+                toolbar.setTitle("搜索...");
+                return true;
+            }
         }
+        return super.onKeyDown(keyCode, event);
     }
 }

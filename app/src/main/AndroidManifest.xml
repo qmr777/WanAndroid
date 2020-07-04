@@ -29,6 +29,7 @@
         <activity android:name=".ui.common.WebViewActivity" />
         <activity
             android:name=".ui.MainActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard" />
         <activity
             android:name=".ui.splash.SplashActivity"

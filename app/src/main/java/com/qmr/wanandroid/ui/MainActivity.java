@@ -1,11 +1,12 @@
 package com.qmr.wanandroid.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -40,6 +41,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.bnv)
     BottomNavigationView bnv;
 
+    SearchView mSearchView;
+
     List<BaseFragment> fragmentList = new ArrayList<>();
     String[] titles = {"WanAndroid", "体系", "导航", "问答", "我的"};
 
@@ -52,8 +55,17 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        //if (hasFocus)
+    }
+
+    @Override
     protected void initView() {
         toolbar.setTitle("WanAndroid");
+        toolbar.inflateMenu(R.menu.toolbar_search);
+        initSearch(toolbar.getMenu());
+/*
         toolbar.inflateMenu(R.menu.toolbar_main_frag);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -65,7 +77,7 @@ public class MainActivity extends BaseActivity {
                 }
                 return true;
             }
-        });
+        });*/
 
         vp_main.setAdapter(new ViewPagerAdapter(this));
         vp_main.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -116,6 +128,28 @@ public class MainActivity extends BaseActivity {
 
     private void changePage(int position) {
         vp_main.setCurrentItem(position);
+    }
+
+    private void initSearch(Menu menu) {
+        //getMenuInflater().inflate(R.menu.toolbar_search,menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) searchItem.getActionView();
+        mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                mSearchView.setQuery(null, false);
+                mSearchView.clearFocus();
+                mSearchView.onActionViewCollapsed();
+                SearchActivity.linkStart(MainActivity.this, s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     private class ViewPagerAdapter extends FragmentStateAdapter {
