@@ -91,7 +91,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void register() {
 
-
         String username = tvUsername.getText().toString();
         String password = tvPassword.getText().toString();
         Log.i(TAG, "login2: " + username + "    " + password);
@@ -108,10 +107,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onNext(@NonNull LoginBean loginBean) {
-                        //LoginUtil.success(loginBeanBaseResponse.getUsername());
+                        new AlertDialog.Builder(LoginActivity.this)
+                                .setTitle("注册成功")
+                                .setMessage("账号是" + username + "\n" + "密码是：" + password)
+                                .setPositiveButton("确定", null)
+                                .show();
                         LoginUtil.success(loginBean.getUsername());
                         setResult(1);
-                        finish();
+                        //finish();
                     }
 
                     @Override
