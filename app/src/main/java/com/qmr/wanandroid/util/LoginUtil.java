@@ -20,7 +20,6 @@ public class LoginUtil {
         mCookieSet = PreferencesUtil.getInstance().getCookies();
         username = PreferencesUtil.getInstance().getUsername();
         isLogin = (mCookieSet != null && mCookieSet.size() != 0) && (!TextUtils.isEmpty(username));
-
         Log.i("LoginUtil", "LoginUtil: " + username);
 
     }

@@ -65,19 +65,7 @@ public class MainActivity extends BaseActivity {
         toolbar.setTitle("WanAndroid");
         toolbar.inflateMenu(R.menu.toolbar_search);
         initSearch(toolbar.getMenu());
-/*
-        toolbar.inflateMenu(R.menu.toolbar_main_frag);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.menu_item_search:
-                        startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                        break;
-                }
-                return true;
-            }
-        });*/
+
 
         vp_main.setAdapter(new ViewPagerAdapter(this));
         vp_main.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -86,15 +74,9 @@ public class MainActivity extends BaseActivity {
                 super.onPageSelected(position);
                 toolbar.setTitle(titles[position]);
                 if (position == 4)
-                    toolbar.setTitle(TextUtils.isEmpty(LoginUtil.username) && LoginUtil.getLoginStatue() ?
+                    toolbar.setTitle(TextUtils.isEmpty(LoginUtil.username) ?
                             titles[position] : LoginUtil.username);
                 bnv.getMenu().getItem(position).setChecked(true);
-//                toolbar.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        fragmentList.get(position).scrollToTop();
-//                    }
-//                });
             }
         });
 
@@ -152,7 +134,7 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private class ViewPagerAdapter extends FragmentStateAdapter {
+    private static class ViewPagerAdapter extends FragmentStateAdapter {
 
         public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
