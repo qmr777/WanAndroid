@@ -56,25 +56,29 @@ public abstract class BaseRecyclerViewAdapter<VH extends RecyclerView.ViewHolder
     }
 
     public boolean removeItem(Data item) {
-        boolean flag = datalist.remove(item);
-        notifyDataSetChanged();
-        return flag;
+        //boolean flag = false;
+        int position = datalist.indexOf(item);
+        if (position != -1) {
+            datalist.remove(item);
+            notifyItemRemoved(position);
+        }
+        return true;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH holder, final int position) {
+    public void onBindViewHolder(@NonNull final VH holder, final int position) {
         if (listener != null)
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.OnItemClick(position, datalist.get(position));
+                    listener.OnItemClick(holder.getAdapterPosition(), datalist.get(holder.getAdapterPosition()));
                 }
             });
         if (longClickListener != null)
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return longClickListener.OnItemLongClick(position, datalist.get(position));
+                    return longClickListener.OnItemLongClick(holder.getAdapterPosition(), datalist.get(holder.getAdapterPosition()));
                 }
             });
     }

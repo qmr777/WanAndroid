@@ -2,6 +2,7 @@ package com.qmr.wanandroid.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.qmr.wanandroid.ui.mine.MineFragment;
 import com.qmr.wanandroid.ui.tixi.navi.NaviFragment;
 import com.qmr.wanandroid.ui.tixi.tixi.TixiFragment;
 import com.qmr.wanandroid.ui.wenda.WendaFragment;
+import com.qmr.wanandroid.util.LoginUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +73,9 @@ public class MainActivity extends BaseActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 toolbar.setTitle(titles[position]);
+                if (position == 4)
+                    toolbar.setTitle(TextUtils.isEmpty(LoginUtil.username) && LoginUtil.getLoginStatue() ?
+                            titles[position] : LoginUtil.username);
                 bnv.getMenu().getItem(position).setChecked(true);
 //                toolbar.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -114,7 +119,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private class ViewPagerAdapter extends FragmentStateAdapter {
-
 
         public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);

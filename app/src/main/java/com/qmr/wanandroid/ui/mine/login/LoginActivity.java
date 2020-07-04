@@ -1,5 +1,6 @@
 package com.qmr.wanandroid.ui.mine.login;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.qmr.wanandroid.R;
 import com.qmr.wanandroid.model.entity.LoginBean;
 import com.qmr.wanandroid.network.base.CheckMapFunction;
 import com.qmr.wanandroid.network.base.RequestManager;
+import com.qmr.wanandroid.network.base.WanNetworkException;
 import com.qmr.wanandroid.util.LoginUtil;
 
 import butterknife.BindView;
@@ -106,12 +108,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onNext(@NonNull LoginBean loginBean) {
-
+                        //LoginUtil.success(loginBeanBaseResponse.getUsername());
+                        LoginUtil.success(loginBean.getUsername());
+                        setResult(1);
+                        finish();
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        if (e instanceof WanNetworkException) {
+                            new AlertDialog.Builder(LoginActivity.this)
+                                    .setTitle("出错了...")
+                                    .setMessage(e.getMessage())
+                                    .setPositiveButton("确定", null)
+                                    .show();
+                        }
                     }
 
                     @Override

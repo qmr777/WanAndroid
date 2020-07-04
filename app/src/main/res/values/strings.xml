@@ -37,4 +37,11 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="about_author">
+        感谢鸿洋@hongyang 提供的WanAndroid API\n\n
+        感谢@淡人日记 提供的bing图片接口\n\n
+
+        开发者 酷安@qmr777
+    </string>
 </resources>

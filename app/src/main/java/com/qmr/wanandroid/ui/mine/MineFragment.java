@@ -127,7 +127,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity())
                 .setTitle("关于作者")
-                .setMessage("酷安 @qmr777")
+                .setMessage(getString(R.string.about_author))
                 .setPositiveButton("ok", null);
 
         builder.show();

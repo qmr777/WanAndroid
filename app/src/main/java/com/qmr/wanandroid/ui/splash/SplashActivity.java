@@ -118,9 +118,8 @@ public class SplashActivity extends AppCompatActivity {
                     .map(new Function<List<BingImageEntity>, BingImageEntity>() {
                         @Override
                         public BingImageEntity apply(List<BingImageEntity> bingImageEntities) throws Throwable {
-                            int rand = (int) (Math.random() * 100 % bingImageEntities.size());
-                            while (rand >= bingImageEntities.size())
-                                rand--;
+                            //int rand = (int) (Math.random() * 100 % bingImageEntities.size());
+                            int rand = new Random().nextInt(bingImageEntities.size() - 1);
                             return bingImageEntities.get(rand);
                         }
                     }).subscribeOn(Schedulers.io())
@@ -146,7 +145,6 @@ public class SplashActivity extends AppCompatActivity {
                         public void onError(@NonNull Throwable e) {
                             Toast.makeText(SplashActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                             Log.e(TAG, e.getMessage(), e);
-                            cd.dispose();
                             SplashActivity.this.startActivity(new Intent(SplashActivity.this, MainActivity.class));
                             finish();
                         }
@@ -157,17 +155,17 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     });
 
-            Disposable disposable = Observable.interval(1, TimeUnit.SECONDS)
+            Disposable disposable = Observable.interval(1, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<Long>() {
                         @Override
                         public void accept(Long aLong) throws Throwable {
-                            if (aLong >= 3) {
+                            if (aLong >= 3000) {
                                 cd.dispose();
                                 SplashActivity.this.startActivity(new Intent(SplashActivity.this, MainActivity.class));
                                 finish();
-                            } else if (aLong >= 1) {
-                                tvDesc.setVisibility(View.VISIBLE);
+                            } else if (aLong >= 1000) {
+                                tvDesc.setAlpha(getAlpha(aLong));
                             }
                         }
                     });
@@ -180,5 +178,12 @@ public class SplashActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         cd.dispose();
+    }
+
+
+    private float getAlpha(long ms) {
+        if (ms < 1000) return 0;
+        else if (ms < 2000) return (ms - 1000) / 1000f;
+        else return 1f;
     }
 }

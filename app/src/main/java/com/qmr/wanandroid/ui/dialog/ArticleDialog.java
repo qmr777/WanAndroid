@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +38,7 @@ public class ArticleDialog extends DialogFragment {
         super();
         flag = 1;
         this.topArticleBean = bean;
-        strings[0] = "收藏";
+        strings[0] = bean.isCollect() ? "取消收藏" : "收藏";
         strings[1] = "稍后在看";
         strings[2] = TextUtils.isEmpty(bean.getAuthor()) ? "查看转载者：" + bean.getShareUser() : "查看作者：" + bean.getAuthor();
     }
@@ -99,7 +100,7 @@ public class ArticleDialog extends DialogFragment {
     }
 
     private void collection(int id, boolean isCollect) {
-
+        Log.i(TAG, "collection: " + id + isCollect);
         MineApi api = RequestManager.getInstance().getService(MineApi.class);
         if (isCollect) {//已经收藏 要取消
             api.removeCollections(id).subscribeOn(Schedulers.io()).subscribe();

@@ -11,8 +11,6 @@ public class CheckMapFunction<T> implements Function<WanAndroidResponse<T>, T> {
         if (tWanAndroidResponse.getCode() != 0)
             throw new WanNetworkException(tWanAndroidResponse.getMsg());
 
-        //Log.i(TAG, "apply: " + tWanAndroidResponse.getData());
-
         return tWanAndroidResponse.getData();
     }
 }

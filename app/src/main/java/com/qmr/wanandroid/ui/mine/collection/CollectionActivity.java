@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.qmr.base.activity.BaseActivity;
@@ -16,6 +17,7 @@ import com.qmr.wanandroid.model.entity.CollectionBean;
 import com.qmr.wanandroid.model.entity.CollectionItemBean;
 import com.qmr.wanandroid.network.base.CheckMapFunction;
 import com.qmr.wanandroid.network.base.RequestManager;
+import com.qmr.wanandroid.network.base.WanAndroidResponse;
 import com.qmr.wanandroid.network.mine.MineApi;
 import com.qmr.wanandroid.ui.common.WebViewActivity;
 
@@ -49,8 +51,8 @@ public class CollectionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_collection);
         ButterKnife.bind(this);
-        loadCollections2();
         initView();
+        loadCollections2();
     }
 
     @Override
@@ -73,6 +75,7 @@ public class CollectionActivity extends BaseActivity {
             }
         });
         rvMain.setAdapter(adapter);
+        rvMain.setItemAnimator(new DefaultItemAnimator());
     }
 
 
@@ -134,8 +137,37 @@ public class CollectionActivity extends BaseActivity {
 
 
     protected void removeArticle(CollectionItemBean data) {
+
+        RequestManager.getInstance().getService(MineApi.class).
+                removeCollections(data.getOriginId()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<WanAndroidResponse>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull WanAndroidResponse wanAndroidResponse) {
+                        //Log.i(TAG, "onNext: " + wanAndroidResponse.getMsg() + wanAndroidResponse.getCode());
+                        if (wanAndroidResponse.getCode() == 0) {
+                            shortToast("取消收藏");
+                            adapter.removeItem(data);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        shortToast(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+/*
         RequestManager.getInstance().getService(MineApi.class)
-                .removeCollections(data.getId(), data.getOriginId())
+                .removeCollections(data.getId())
                 .map(new CheckMapFunction())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -153,14 +185,17 @@ public class CollectionActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        shortToast(e.getMessage());
+                        adapter.removeItem(data);
+                        if (e instanceof WanNetworkException){
+                            //doNothing
+                        }
                     }
 
                     @Override
                     public void onComplete() {
 
                     }
-                });
+                });*/
     }
 
 }
