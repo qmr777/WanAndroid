@@ -44,7 +44,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  *
  *
- * .compose(new ThreadTransfer<>())
+ *
+ *
+ * 先mergeDelayError再指定线程的话，mergeDelayError没有起到延迟通知onError的作用，
+ * 第一个observable出现错误的时候，整个合并的observable也onError了，第二个observable无法输出。
+ *
+ * 但是如果改成每个observable单独subscribeOn和observeOn，然后再mergeDelayError，就正常进行了。
+ * ————————————————
+ * 版权声明：本文为CSDN博主「清风飞阳」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+ * 原文链接：https://blog.csdn.net/shuxiangxingkong/article/details/52516018
  */
 public class CacheObserver {
 
