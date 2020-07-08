@@ -93,6 +93,12 @@ public abstract class BaseFragment extends Fragment {
         Log.d(TAG, "onViewStateRestored: ");
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.v(TAG, "onHiddenChanged: " + hidden);
+    }
+
     protected abstract int getLayoutID();
 
     protected void shortToast(CharSequence message) {
@@ -109,6 +115,11 @@ public abstract class BaseFragment extends Fragment {
         super.startActivity(intent);
         requireActivity().overridePendingTransition(R.anim.anim_activity_start_in, R.anim.anim_activity_start_out);
 
+    }
+
+    @Override
+    public boolean getUserVisibleHint() {
+        return super.getUserVisibleHint();
     }
 
     public void scrollToTop() {

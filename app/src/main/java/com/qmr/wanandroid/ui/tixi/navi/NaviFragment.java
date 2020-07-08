@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.qmr.base.BaseFragment;
+import com.qmr.base.util.ThreadTransfer;
 import com.qmr.wanandroid.R;
 import com.qmr.wanandroid.model.cache.CacheObserver;
 import com.qmr.wanandroid.model.entity.NaviBean;
@@ -26,11 +27,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class NaviFragment extends BaseFragment {
 
@@ -121,10 +120,11 @@ public class NaviFragment extends BaseFragment {
         };
 
         Observable<List<NaviBean>> localOb = CacheObserver.getNavigationCache();
-        Observable<List<NaviBean>> netOb = RequestManager.getInstance().getService(Tixi.class).navigation().flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_NAVIGATION));
-        Observable.concatDelayError(Arrays.asList(localOb, netOb))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        Observable<List<NaviBean>> netOb = RequestManager.getInstance()
+                .getService(Tixi.class).navigation().flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_NAVIGATION));
+        Observable.concatDelayError(Arrays.asList(localOb, netOb)).compose(new ThreadTransfer<>())
+/*                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())*/
                 .subscribe(observer);
 
     }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.qmr.base.BaseFragment;
+import com.qmr.base.util.ThreadTransfer;
 import com.qmr.wanandroid.R;
 import com.qmr.wanandroid.model.cache.CacheObserver;
 import com.qmr.wanandroid.model.entity.WendaBean;
@@ -111,7 +112,7 @@ public class WendaFragment extends BaseFragment {
     void initData() {
         Observable<WendaBean> local = CacheObserver.getWendaCache();
         Observable<WendaBean> network = RequestManager.getInstance().getService(MainApi.class)
-                .wenda(0).flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_WENDA));
+                .wenda(1).flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_WENDA)).compose(new ThreadTransfer<>());
 
         Observer<WendaBean> ob = new Observer<WendaBean>() {
             @Override
@@ -139,11 +140,10 @@ public class WendaFragment extends BaseFragment {
             public void onComplete() {
             }
         };
-        Observable.concatEagerDelayError(Arrays.asList(local, network)).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        Observable.concatEagerDelayError(Arrays.asList(local, network))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ob);
-        //load();
-        //load();
     }
 
     private void load() {
@@ -180,7 +180,6 @@ public class WendaFragment extends BaseFragment {
                     }
                 });
     }
-
 
     private void loadMore() {
         if (!canLoadMore) return;

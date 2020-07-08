@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.qmr.base.BaseFragment;
+import com.qmr.base.util.ThreadTransfer;
 import com.qmr.wanandroid.R;
 import com.qmr.wanandroid.model.cache.CacheObserver;
 import com.qmr.wanandroid.model.entity.TixiBean;
@@ -26,11 +27,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * 体系fragment
@@ -46,9 +45,7 @@ public class TixiFragment extends BaseFragment {
 
     private boolean flag_need_refresh = true;
 
-
     public TixiFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -67,7 +64,7 @@ public class TixiFragment extends BaseFragment {
         if (contentView == null) {
             contentView = inflater.inflate(R.layout.fragment_tixi, container, false);
             ButterKnife.bind(this, contentView);
-            rvTixi.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvTixi.setLayoutManager(new LinearLayoutManager(requireActivity()));
             initView();
         }
         return contentView;
@@ -103,6 +100,7 @@ public class TixiFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        Log.i(TAG, "onHiddenChanged: ");
         if (!hidden && flag_need_refresh)
             initData();
     }
@@ -141,11 +139,9 @@ public class TixiFragment extends BaseFragment {
 
         Observable<List<TixiBean>> local = CacheObserver.getTixiCache();
         Observable<List<TixiBean>> network = RequestManager.getInstance().getService(Tixi.class)
-                .tixi().flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_TIXI));
+                .tixi().flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_TIXI)).compose(new ThreadTransfer<>());
 
         Observable.concatEagerDelayError(Arrays.asList(local, network))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ob);
 
     }

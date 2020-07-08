@@ -2,6 +2,7 @@ package com.qmr.wanandroid.ui.home;
 
 import android.util.Log;
 
+import com.qmr.base.util.ThreadTransfer;
 import com.qmr.wanandroid.model.cache.CacheObserver;
 import com.qmr.wanandroid.model.entity.ArticleListBean;
 import com.qmr.wanandroid.model.entity.BannerBean;
@@ -42,11 +43,12 @@ public class HomeModel implements IHomeModel {
         Observable<List<BannerBean>> local = CacheObserver.getBannerCache();
         Observable<List<BannerBean>> remote = RequestManager.getInstance().getService(MainApi.class)
                 .banner()
-                .flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_BANNER));
+                .flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_BANNER))
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 
         Observable.concatDelayError(Arrays.asList(local, remote))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<BannerBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -76,11 +78,12 @@ public class HomeModel implements IHomeModel {
         Observable<List<TopArticleBean>> local = CacheObserver.getTopCache();
         Observable<List<TopArticleBean>> remote = RequestManager.getInstance().getService(MainApi.class)
                 .topArticleList()
-                .flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_TOP));
+                .flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_TOP))
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 
         Observable.concatDelayError(Arrays.asList(local, remote))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<TopArticleBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -113,11 +116,12 @@ public class HomeModel implements IHomeModel {
         Observable<ArticleListBean> local = CacheObserver.getContentCache();
         Observable<ArticleListBean> remote = RequestManager.getInstance().getService(MainApi.class)
                 .articleList(0)
-                .flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_CONTENT));
+                .flatMap(new CheckAndSaveFlatMapFunc<>(Const.KEY_CACHE_CONTENT))
+                .compose(new ThreadTransfer<>());
 
         Observable.concatDelayError(Arrays.asList(local, remote))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ArticleListBean>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

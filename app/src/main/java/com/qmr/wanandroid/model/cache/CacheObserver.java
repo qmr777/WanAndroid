@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.qmr.base.util.ThreadTransfer;
 import com.qmr.wanandroid.model.entity.ArticleListBean;
 import com.qmr.wanandroid.model.entity.BannerBean;
 import com.qmr.wanandroid.model.entity.NaviBean;
@@ -15,10 +16,12 @@ import com.qmr.wanandroid.util.Const;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * 不含erreocode的缓存类，应该用在checkObservable之后
@@ -39,6 +42,9 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe;
  * 链接：https://www.jianshu.com/p/e80bb5a5f09e
  * 来源：简书
  * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ *
+ *
+ * .compose(new ThreadTransfer<>())
  */
 public class CacheObserver {
 
@@ -59,7 +65,7 @@ public class CacheObserver {
                 emitter.onNext(new Gson().fromJson(c, type));
                 emitter.onComplete();
             }
-        });
+        }).compose(new ThreadTransfer<>());
 
         return ob;
     }
@@ -74,7 +80,7 @@ public class CacheObserver {
                 emitter.onNext(bean);
                 emitter.onComplete();
             }
-        });
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 
         return ob;
     }
@@ -91,7 +97,7 @@ public class CacheObserver {
                 emitter.onNext(bean);
                 emitter.onComplete();//加上
             }
-        });
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         return ob;
     }
 
@@ -100,13 +106,15 @@ public class CacheObserver {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<TopArticleBean>> emitter) throws Throwable {
                 String c = CacheManager.getInstance().get(Const.KEY_CACHE_TOP);
+                Log.i(TAG, "subscribe: c.length() = " + c.length());
                 Type type = new TypeToken<List<TopArticleBean>>() {
                 }.getType();
                 List<TopArticleBean> bean = new Gson().fromJson(c, type);
+                Log.i(TAG, "subscribe: bean.size() = " + bean.size());
                 emitter.onNext(bean);
                 emitter.onComplete();
             }
-        });
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 
         return ob;
     }
@@ -116,15 +124,16 @@ public class CacheObserver {
         Observable<ArticleListBean> ob = Observable.create(new ObservableOnSubscribe<ArticleListBean>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<ArticleListBean> emitter) throws Throwable {
-                Log.i(TAG, "subscribe: " + Thread.currentThread().getName());
+                Log.i(TAG, "tixi subscribe: " + Thread.currentThread().getName());
                 String c = CacheManager.getInstance().get(Const.KEY_CACHE_CONTENT);
                 Type type = new TypeToken<ArticleListBean>() {
                 }.getType();
                 ArticleListBean bean = new Gson().fromJson(c, type);
+                Log.i(TAG, "subscribe: " + bean.getArticles().size());
                 emitter.onNext(bean);
                 emitter.onComplete();
             }
-        });
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         return ob;
     }
 
@@ -135,13 +144,14 @@ public class CacheObserver {
             public void subscribe(@NonNull ObservableEmitter<List<NaviBean>> emitter) throws Throwable {
                 Log.i(TAG, "subscribe: " + Thread.currentThread().getName());
                 String c = CacheManager.getInstance().get(Const.KEY_CACHE_NAVIGATION);
+                Log.i(TAG, "subscribe: c.length() = " + c.length());
                 Type type = new TypeToken<List<NaviBean>>() {
                 }.getType();
                 List<NaviBean> bean = new Gson().fromJson(c, type);
                 emitter.onNext(bean);
                 emitter.onComplete();
             }
-        });
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         return ob;
     }
 
@@ -158,7 +168,7 @@ public class CacheObserver {
                 emitter.onNext(bean);
                 emitter.onComplete();
             }
-        });
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         return ob;
     }
 
@@ -173,7 +183,7 @@ public class CacheObserver {
                 emitter.onNext(bean);
                 emitter.onComplete();
             }
-        });
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         return ob;
     }
 

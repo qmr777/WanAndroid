@@ -46,6 +46,8 @@ public class CacheUtil {
             DiskLruCache diskLruCache = DiskLruCache.open(cacheDir, APP_VERSION, 1, 1024 * 1024 * 10);
             value = diskLruCache.get(key).getString(0);
             diskLruCache.close();
+            Log.i(TAG, key + " getDiskCache: value.length()" + value.length());
+
         } catch (Exception e) {
             Log.i(TAG, "getDiskCache: " + e.getMessage());
             e.printStackTrace();

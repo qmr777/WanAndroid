@@ -6,10 +6,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.qmr.base.activity.BaseActivity;
+import com.qmr.base.adapter.OnItemClickListener;
 import com.qmr.wanandroid.R;
 import com.qmr.wanandroid.model.database.DatabaseManager;
 import com.qmr.wanandroid.model.entity.HistoryBean;
 import com.qmr.wanandroid.model.entity.ReadLaterBean;
+import com.qmr.wanandroid.ui.common.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,12 @@ public class ReadLaterActivity extends BaseActivity {
     @Override
     protected void initView() {
         initToolbar(toolbar, "稍后再看");
+        adapter.setOnItemClickListener(new OnItemClickListener<HistoryBean>() {
+            @Override
+            public void OnItemClick(int position, HistoryBean data) {
+                WebViewActivity.linkStart(ReadLaterActivity.this, data.getTitle(), data.getLink(), data.get_id());
+            }
+        });
         rv.setAdapter(adapter);
     }
 

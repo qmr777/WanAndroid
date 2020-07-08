@@ -67,7 +67,6 @@ public class MainActivity extends BaseActivity {
         toolbar.inflateMenu(R.menu.toolbar_search);
         initSearch(toolbar.getMenu());
 
-
         vp_main.setAdapter(new ViewPagerAdapter(this));
         vp_main.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -139,11 +138,6 @@ public class MainActivity extends BaseActivity {
 
         public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
-/*            fragmentList.add(new MainFragment());
-            fragmentList.add(new TixiFragment());
-            fragmentList.add(new NaviFragment());
-            fragmentList.add(new WendaFragment());
-            fragmentList.add(new MineFragment());*/
         }
 
         @NonNull
